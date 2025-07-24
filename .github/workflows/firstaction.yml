@@ -1,0 +1,14 @@
+name: demo-workflow
+
+on: 
+  push:
+
+jobs:
+  base_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: echo "Hello"
+
+      - name: list
+        run: ls
