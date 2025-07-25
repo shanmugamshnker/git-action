@@ -10,23 +10,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install cowsay
+      - name: Install cowsay and generate dragon output
         run: |
           sudo apt-get update
           sudo apt-get install -y cowsay
+          cowsay -f dragon "Deploy successful! 🐉" > dragon_output.txt
 
-  dragon:
+      - name: Upload dragon_output.txt
+        uses: actions/upload-artifact@v4
+        with:
+          name: dragon-artifact
+          path: dragon_output.txt
+
+  test:
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Dragon says Hello
-        run: |
-          cowsay -f dragon "Deploy successful! 🐉"
+      - name: Download dragon_output.txt
+        uses: actions/download-artifact@v4
+        with:
+          name: dragon-artifact
 
-  test:
-    needs: dragon
-    runs-on: ubuntu-latest
-    steps:
+      - name: Show dragon message from file
+        run: |
+          echo "Here is the dragon message from the file:"
+          cat dragon_output.txt
+
       - name: test
         run: |
           echo "Running tests..."
