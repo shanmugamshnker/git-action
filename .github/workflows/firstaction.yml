@@ -10,10 +10,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install cowsay
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cowsay
+
+      - name: Dragon says Hello
+        run: |
+          MESSAGE="Deploy successful! 🐉"
+          echo "Generating a dragon message..."
+          cowsay -f dragon "$MESSAGE"
+
       - name: test
-        run: echo "Hello"
+        run: |
+          echo "Running test..."
+          echo "Hello"
 
       - name: list
-        run: ls
-      - name: check the file content
-        run: cat README.md
+        run: |
+          echo "Listing files..."
+          ls
