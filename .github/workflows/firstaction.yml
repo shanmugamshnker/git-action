@@ -1,10 +1,10 @@
 name: demo-workflow
 
-on: 
+on:
   push:
 
 jobs:
-  base_job:
+  setup:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -15,17 +15,27 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y cowsay
 
+  dragon:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
       - name: Dragon says Hello
         run: |
-          MESSAGE="Deploy successful! 🐉"
-          echo "Generating a dragon message..."
-          cowsay -f dragon "$MESSAGE"
+          cowsay -f dragon "Deploy successful! 🐉"
 
+  test:
+    needs: dragon
+    runs-on: ubuntu-latest
+    steps:
       - name: test
         run: |
-          echo "Running test..."
+          echo "Running tests..."
           echo "Hello"
 
+  list:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
       - name: list
         run: |
           echo "Listing files..."
